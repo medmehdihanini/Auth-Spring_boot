@@ -1,5 +1,6 @@
 package com.example.auth._Services.IMP;
 
+import com.example.auth.DTO.LoginDto;
 import com.example.auth.Enteties.User;
 import com.example.auth.Repositories.IUserRepository;
 import com.example.auth._Services.IUserService;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 
 @Primary
@@ -34,10 +36,8 @@ public class UserServiceImp implements IUserService {
         String baseUsername = user.getUserName();
         String uniqueUsername = generateUniqueUsername(baseUsername);
         user.setUserName(uniqueUsername);
-
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-
         return userRepository.save(user);
     }
 
@@ -52,7 +52,23 @@ public class UserServiceImp implements IUserService {
     }
 
     @Override
-    public User Login(String username, String email, String password) {
+    public User Login(LoginDto  loginDto) {
+        User user = userRepository.findByEmailOrUserName(loginDto.getEmail(), loginDto.getUsername());
+        if(passwordEncoder.matches(loginDto.getPassword(),user.getPassword())){
+
+            return user;
+
+        }
         return null;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User UpdateAccount(User e) {
+        return userRepository.save(e);
     }
 }

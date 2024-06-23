@@ -9,23 +9,24 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
+
 @Setter
 @Getter
 @Entity
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long USER_ID;
+    private long id;
 
-    private String FirstName;
+    private String firstName;
 
-    private String LastName;
+    private String lastName;
 
-    private String UserName;
+    private String userName;
 
-    private String Email;
+    private String email;
 
-    private String Password;
+    private String password;
 
     private Date dateNaissance;
 }
