@@ -1,14 +1,13 @@
 package com.example.auth.Enteties;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Setter
 @Getter
@@ -29,4 +28,11 @@ public class User implements Serializable {
     private String password;
 
     private Date dateNaissance;
+
+
+    @Enumerated(EnumType.STRING)
+
+    private Role role;
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    private List<Service> ServicesListe;
 }
