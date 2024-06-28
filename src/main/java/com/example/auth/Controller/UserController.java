@@ -11,6 +11,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("foyer")
 @RestController
+@CrossOrigin(origins = "*")
+
 
 public class UserController {
     private final IUserService userService;

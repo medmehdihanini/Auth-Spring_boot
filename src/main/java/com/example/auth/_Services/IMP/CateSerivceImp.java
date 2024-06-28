@@ -8,12 +8,15 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
 @Primary
 @AllArgsConstructor
 @Service
+@CrossOrigin(origins = "*")
+
 public class CateSerivceImp  implements ICategorieService {
 
     private CategorieRepository categorieRepository;

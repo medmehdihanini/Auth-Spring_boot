@@ -11,6 +11,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("categ")
 @RestController
+@CrossOrigin(origins = "http://localhost:4200/")
+
 public class CategController {
     private final ICategorieService ICategService;
 
@@ -31,7 +33,7 @@ public class CategController {
     public void delete(@PathVariable long id){
         ICategService.delete(id);}
 
-    @DeleteMapping("get/{id}")
+    @GetMapping("get/{id}")
     public Categorie getone(@PathVariable long id){
         return ICategService.find(id);}
 

@@ -19,6 +19,7 @@ public class Service implements Serializable {
     @ManyToOne
     private User user;
     @ManyToOne
+    @JoinColumn(name = "categorie_id")
     private Categorie categorie;
 
 

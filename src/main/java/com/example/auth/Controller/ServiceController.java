@@ -11,6 +11,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("service")
 @RestController
+@CrossOrigin(origins = "*")
+
 public class ServiceController {
     private final IService Iservice;
     @GetMapping("All")
@@ -31,7 +33,7 @@ public class ServiceController {
     public void delete(@PathVariable long id){
         Iservice.delete(id);}
 
-    @DeleteMapping("get/{id}")
+    @GetMapping("get/{id}")
     public Service getone(@PathVariable long id){
         return Iservice.find(id);}
 

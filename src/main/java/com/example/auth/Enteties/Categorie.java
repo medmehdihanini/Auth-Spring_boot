@@ -1,5 +1,6 @@
 package com.example.auth.Enteties;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,9 +15,10 @@ public class Categorie implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String categorieame;
-    private String categoriecescription;
+    private String categoriename;
+    private String categoriecdescription;
     private double categorieprice;
+    @JsonIgnore
     @OneToMany(mappedBy = "categorie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Service> listeservices;
 
