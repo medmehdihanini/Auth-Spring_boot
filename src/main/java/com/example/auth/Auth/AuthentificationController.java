@@ -1,10 +1,7 @@
 package com.example.auth.Auth;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 import jakarta.mail.MessagingException;
 
@@ -20,5 +17,21 @@ public class AuthentificationController {
         System.out.println("Email: " + request.getEmail());
         service.registre(request);
         return ResponseEntity.accepted().build();
+    }
+
+
+    @PostMapping("/authificate")
+    public ResponseEntity<AuthentificationResponse> authentification(
+            @RequestBody AuthentificationRequest request) throws MessagingException {
+return ResponseEntity.ok(service.authentificate(request));
+    }
+
+
+
+
+    @GetMapping("/activate-account")
+    public void confiormAccount(@RequestParam("token") String token) throws MessagingException {
+        service.activateAccount(token);
+
     }
 }
