@@ -100,4 +100,8 @@ return Jwts
     }
 
 
+    public String extractEmail(String token) {
+
+        return extractClaim(token, Claims::getSubject);
+    }
 }

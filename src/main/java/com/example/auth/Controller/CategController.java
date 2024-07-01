@@ -4,7 +4,9 @@ import com.example.auth.Enteties.Categorie;
 import com.example.auth.Enteties.Service;
 import com.example.auth._Services.ICategorieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -16,12 +18,14 @@ import java.util.List;
 public class CategController {
     private final ICategorieService ICategService;
 
-@GetMapping("getAll")
+
+
+    @GetMapping("getAll")
     public List<Categorie> getAll() {return ICategService.findAll();
 }
     @PostMapping("add")
-    public Categorie add(@RequestBody Categorie cat) {
-        return ICategService.add(cat);
+    public Categorie add(@RequestBody Categorie cat,Authentication connectedUser) {
+        return ICategService.add(cat,connectedUser);
     }
 
 

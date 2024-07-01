@@ -1,6 +1,7 @@
 package com.example.auth._Services.IMP;
 
 import com.example.auth.Enteties.Categorie;
+import com.example.auth.Enteties.User;
 import com.example.auth.Repositories.CategorieRepository;
 import com.example.auth._Services.ICategorieService;
 import jakarta.transaction.Transactional;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -23,7 +25,8 @@ public class CateSerivceImp  implements ICategorieService {
 
     @Override
     @Transactional
-    public Categorie add(Categorie categorie) {
+    public Categorie add(Categorie categorie,Authentication connectedUser) {
+        User user = ((User) connectedUser.getPrincipal());
         return categorieRepository.save(categorie);
     }
 

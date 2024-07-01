@@ -1,6 +1,8 @@
 package com.example.auth.Auth;
 
 import com.example.auth.Config.JwtService;
+import com.example.auth.Config.UserDetailsServiceImp;
+import com.example.auth.DTO.InfoDto;
 import com.example.auth.Email.EmailService;
 import com.example.auth.Email.EmailTemplate;
 import com.example.auth.Enteties.Token;
@@ -8,12 +10,16 @@ import com.example.auth.Enteties.User;
 import com.example.auth.Repositories.IUserRepository;
 import com.example.auth.Repositories.RoleRepository;
 import com.example.auth.Repositories.TokenRepository;
+import com.nimbusds.openid.connect.sdk.AuthenticationRequest;
+import com.nimbusds.openid.connect.sdk.AuthenticationResponse;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,6 +40,7 @@ public class AuthentificationService {
     private final EmailService emailService;
     private final AuthenticationManager authentificationManager;
     private final JwtService jwtService;
+    private final UserDetailsService userDetailsService;
 
 
     @Value("${application.mailing.frontend.activationUrl}")
@@ -95,23 +102,24 @@ public class AuthentificationService {
         return codebuilder.toString();
     }
 
-    public AuthentificationResponse authentificate(AuthentificationRequest request) {
+    public AuthentificationResponse authenticate(AuthentificationRequest request) {
         var auth = authentificationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()
                 )
         );
-        var claims = new HashMap<String, Object>();
-        var user = ((User)auth.getPrincipal());
-        claims.put("fullname", user.getFirstName() + " " + user.getLastName());
-        var jwtToken = jwtService.generateToken(claims, user);
 
-        return AuthentificationResponse
-                .builder()
+        var claims = new HashMap<String, Object>();
+        var user = ((User) auth.getPrincipal());
+        claims.put("fullName", user.getFirstName() + " " + user.getLastName());
+
+        var jwtToken = jwtService.generateToken(claims, (User) auth.getPrincipal());
+        return AuthentificationResponse.builder()
                 .token(jwtToken)
                 .build();
     }
+
 
     @Transactional
     //tnajm tnaiha
@@ -130,5 +138,20 @@ public class AuthentificationService {
     }
 
 
+    public InfoDto info(String token) {
+
+        var user = userRepository.findByEmail(jwtService.extractEmail(token)).orElseThrow(()-> new RuntimeException("user not found"));
+        return InfoDto.builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .build();
     }
+
+    public UserDetails getUserDetailsFromToken(String token) {
+        String userEmail = jwtService.extractUsername(token);
+        return userDetailsService.loadUserByUsername(userEmail);
+    }
+}
 

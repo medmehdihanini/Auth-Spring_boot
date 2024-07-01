@@ -23,25 +23,17 @@ import static org.springframework.http.HttpStatus.*;
 public class GlobalExceptionHandler {
 
 
-    private final View error;
-
-    public GlobalExceptionHandler(View error) {
-        this.error = error;
-    }
-
     @ExceptionHandler(LockedException.class)
     public ResponseEntity<ExceptionResponse> handleException(LockedException exp) {
         return ResponseEntity
                 .status(UNAUTHORIZED)
                 .body(
-                        ExceptionResponse
-                                .builder()
+                        ExceptionResponse.builder()
                                 .businessErrorCode(ACCOUNT_LOCKED.getCode())
                                 .businessErrorDescription(ACCOUNT_LOCKED.getDescription())
                                 .error(exp.getMessage())
                                 .build()
                 );
-
     }
 
     @ExceptionHandler(DisabledException.class)
@@ -49,67 +41,58 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(UNAUTHORIZED)
                 .body(
-                        ExceptionResponse
-                                .builder()
+                        ExceptionResponse.builder()
                                 .businessErrorCode(ACCOUNT_DISABLED.getCode())
                                 .businessErrorDescription(ACCOUNT_DISABLED.getDescription())
                                 .error(exp.getMessage())
                                 .build()
                 );
-
     }
 
 
-
-
-    @ExceptionHandler(BackingStoreException.class)
-    public ResponseEntity<ExceptionResponse> handleException(BadCredentialsException exp) {
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ExceptionResponse> handleException() {
         return ResponseEntity
                 .status(UNAUTHORIZED)
                 .body(
-                        ExceptionResponse
-                                .builder()
+                        ExceptionResponse.builder()
                                 .businessErrorCode(BAD_CREDENTIALS.getCode())
                                 .businessErrorDescription(BAD_CREDENTIALS.getDescription())
                                 .error(BAD_CREDENTIALS.getDescription())
                                 .build()
                 );
-
     }
-
-
 
     @ExceptionHandler(MessagingException.class)
     public ResponseEntity<ExceptionResponse> handleException(MessagingException exp) {
         return ResponseEntity
                 .status(INTERNAL_SERVER_ERROR)
                 .body(
-                        ExceptionResponse
-                                .builder()
+                        ExceptionResponse.builder()
                                 .error(exp.getMessage())
                                 .build()
                 );
-
     }
 
 
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ExceptionResponse> handleException(MethodArgumentNotValidException exp) {
+    public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exp) {
         Set<String> errors = new HashSet<>();
         exp.getBindingResult().getAllErrors()
-                .forEach(error->{
-                    var errormessage = error.getDefaultMessage();
-                    errors.add(errormessage);
+                .forEach(error -> {
+                    //var fieldName = ((FieldError) error).getField();
+                    var errorMessage = error.getDefaultMessage();
+                    errors.add(errorMessage);
                 });
+
         return ResponseEntity
                 .status(BAD_REQUEST)
                 .body(
-                        ExceptionResponse
-                                .builder()
+                        ExceptionResponse.builder()
                                 .validationErrors(errors)
                                 .build()
                 );
-
     }
 
     @ExceptionHandler(Exception.class)
@@ -118,17 +101,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(INTERNAL_SERVER_ERROR)
                 .body(
-                        ExceptionResponse
-                                .builder()
-
-                                .businessErrorDescription("internal server error")
+                        ExceptionResponse.builder()
+                                .businessErrorDescription("Internal error, please contact the admin")
                                 .error(exp.getMessage())
                                 .build()
                 );
-
     }
-
-
-
-
 }
