@@ -1,4 +1,4 @@
-package com.example.auth._Services.IMP.BlockChaine;
+package com.example.auth.BlockChaine;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

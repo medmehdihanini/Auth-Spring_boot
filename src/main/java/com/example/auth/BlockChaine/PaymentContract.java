@@ -1,4 +1,4 @@
-package com.example.auth._Services.IMP.BlockChaine;
+package com.example.auth.BlockChaine;
 
 import java.math.BigInteger;
 import java.util.Arrays;

@@ -1,13 +1,10 @@
-package com.example.auth._Services.IMP.BlockChaine;
+package com.example.auth.BlockChaine;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.RemoteCall;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.tuples.generated.Tuple3;
-import org.web3j.tx.gas.ContractGasProvider;
 
 import java.math.BigInteger;
 

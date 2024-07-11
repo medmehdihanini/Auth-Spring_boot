@@ -68,7 +68,7 @@ public class AuthentificationService {
     private void sendValidationEmail(User user) throws MessagingException {
         var newToken = generatedAndSaveActivationToken(user);
 
-        emailService.Sendmail(
+        emailService.Sendvalidationmail(
                 user.getEmail(),
                 user.getFirstName() + " " + user.getLastName(),
                 EmailTemplate.ACTIVATE_ACCOUNT,
@@ -83,7 +83,7 @@ public class AuthentificationService {
         var token = Token.builder()
                 .token(generatedToken)
                 .createdat(LocalDateTime.now())
-                .expiredat(LocalDateTime.now().plusMinutes(15))
+                .expiredat(LocalDateTime.now().plusHours(24))
                 .user(user)
                 .build();
         tokenRepository.save(token);
@@ -122,7 +122,7 @@ public class AuthentificationService {
 
 
     @Transactional
-    //tnajm tnaiha
+    //tnajm nahiha
     public void activateAccount(String token) throws MessagingException {
         Token savedToken = tokenRepository.findByToken(token).orElseThrow(()-> new RuntimeException("token not found"));
         if (LocalDateTime.now().isAfter(savedToken.getExpiredat()))

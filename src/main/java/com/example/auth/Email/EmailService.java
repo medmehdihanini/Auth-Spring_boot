@@ -27,7 +27,7 @@ public class EmailService {
 
 
 @Async
-    public void Sendmail(String to
+    public void Sendvalidationmail(String to
             , String username
             , EmailTemplate emailTemplate
             ,String confirmationUrl

@@ -1,4 +1,4 @@
-package com.example.auth._Services.IMP.BlockChaine;
+package com.example.auth.BlockChaine;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
